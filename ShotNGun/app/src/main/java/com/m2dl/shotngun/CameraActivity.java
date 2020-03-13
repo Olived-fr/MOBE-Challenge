@@ -27,6 +27,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -54,6 +55,7 @@ public class CameraActivity extends AppCompatActivity {
     private ImageButton imageButton;
     public static final String CAMERA_FRONT = "1";
     public static final String CAMERA_BACK = "0";
+    private Integer idPnj = 0;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -67,6 +69,7 @@ public class CameraActivity extends AppCompatActivity {
     protected CaptureRequest.Builder captureRequestBuilder;
     private Size imageDimension;
     private ImageReader imageReader;
+    private EditText editTextName;
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
@@ -79,6 +82,7 @@ public class CameraActivity extends AppCompatActivity {
         textureView.setSurfaceTextureListener(textureListener);
         takePictureButton = findViewById(R.id.btn_takepicture);
         relativeLayoutPhoto = findViewById(R.id.relativeLayoutPhoto);
+        editTextName = findViewById(R.id.editTextName);
         imageButton = findViewById(R.id.imageButton);
         assert takePictureButton != null;
         takePictureButton.setOnClickListener(new View.OnClickListener() {
@@ -188,7 +192,14 @@ public class CameraActivity extends AppCompatActivity {
                 rotation = 90;
             }
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, rotation);
-            final File file = new File(Environment.getExternalStorageDirectory()+"/pic.jpg");
+            System.out.println("editTextName.getText() == null) {" + editTextName.getTextSize() + "}");
+            String name = String.valueOf(editTextName.getText());
+            if(name.equals("")) {
+                name = "pnj" + idPnj;
+                idPnj++;
+            }
+
+            final File file = new File(Environment.getExternalStorageDirectory()+"/" + name + ".jpg");
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
