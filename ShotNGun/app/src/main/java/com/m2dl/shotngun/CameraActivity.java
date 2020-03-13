@@ -90,11 +90,14 @@ public class CameraActivity extends AppCompatActivity {
     private HandlerThread mBackgroundThread;
     private String elementType;
     private Speaker speaker;
+    private String hero = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
+        Intent intent = getIntent();
+        hero = intent.getStringExtra("ELEMENT_TYPE");
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
 
@@ -224,6 +227,9 @@ public class CameraActivity extends AppCompatActivity {
             if(name.equals("")) {
                 name = "pnj" + idPnj;
                 idPnj++;
+            }
+            if (hero.equals("HERO")) {
+                name = "HERO";
             }
             File myDir = new File(Environment.getExternalStorageDirectory() +
                     File.separator + "shotncut/"); //pour créer le repertoire dans lequel on va mettre notre fichier
