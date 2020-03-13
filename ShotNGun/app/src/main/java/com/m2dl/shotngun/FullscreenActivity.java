@@ -216,10 +216,9 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //ouverture de l'appareil photo
-                //TODO Décommenter quand le merge sera effectué
-                /*Intent mapActivity = new Intent(getBaseContext(), CameraActivity.class);
-                intent.putExtra("ELEMENT_TYPE", "HERO");
-                startActivity(mapActivity);*/
+                Intent cameraActivity = new Intent(getBaseContext(), CameraActivity.class);
+                cameraActivity.putExtra("ELEMENT_TYPE", "HERO");
+                startActivity(cameraActivity);
             }
         });
 
@@ -227,10 +226,9 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //ouverture de l'appareil photo
-                //TODO Décommenter quand le merge sera effectué
-                /*Intent mapActivity = new Intent(getBaseContext(), CameraActivity.class);
-                intent.putExtra("ELEMENT_TYPE", "ENNEMIE");
-                startActivity(mapActivity);*/
+                Intent cameraActivity = new Intent(getBaseContext(), CameraActivity.class);
+                cameraActivity.putExtra("ELEMENT_TYPE", "ENNEMIE");
+                startActivity(cameraActivity);
             }
         });
 
