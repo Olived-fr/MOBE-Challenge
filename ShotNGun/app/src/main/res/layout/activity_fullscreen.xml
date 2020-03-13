@@ -23,12 +23,14 @@
             android:layout_width="175dp"
             android:layout_height="match_parent"
             android:layout_gravity="right|center_horizontal"
+            android:background="#FAF0C4"
             app:srcCompat="@android:drawable/ic_menu_manage" />
 
         <ImageButton
             android:id="@+id/bouton_jouer"
             android:layout_width="180dp"
             android:layout_height="match_parent"
+            android:background="#FAF0C4"
             android:layout_gravity="left|center_horizontal"
             app:srcCompat="@android:drawable/ic_media_play" />
     </FrameLayout>
@@ -37,24 +39,26 @@
          android:fitsSystemWindows. -->
     <FrameLayout
         android:id="@+id/frame_personnaliser_menu"
-        android:layout_width="293dp"
-        android:layout_height="345dp"
+        android:layout_width="309dp"
+        android:layout_height="478dp"
         android:layout_gravity="center|center_horizontal"
         android:fitsSystemWindows="true"
         android:visibility="invisible">
 
         <ImageButton
             android:id="@+id/bouton_hero"
-            android:layout_width="wrap_content"
-            android:layout_height="107dp"
+            android:layout_width="146dp"
+            android:layout_height="172dp"
             android:layout_gravity="top|center_horizontal"
+            android:background="#FAF0C4"
             app:srcCompat="@drawable/hero" />
 
         <ImageButton
             android:id="@+id/bouton_ajout_ennemie"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="bottom|right"
+            android:background="#FAF0C4"
             app:srcCompat="@drawable/person_add" />
 
         <ScrollView
@@ -70,16 +74,49 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
         </ScrollView>
+
     </FrameLayout>
 
+    <ImageButton
+        android:id="@+id/bouton_retour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_input_delete"
+        android:background="#FAF0C4"
+        android:visibility="invisible"/>
+
+    <ImageButton
+        android:id="@+id/bouton_quitter"
+        android:layout_gravity="top|right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_delete"
+        android:background="#FAF0C4"
+        android:visibility="invisible"/>
+
     <TextView
-        android:id="@+id/fullscreen_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:textColor="#33b5e5"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:id="@+id/text_hero"
+        android:layout_width="205dp"
+        android:layout_height="105dp"
+        android:layout_gravity="top|center"
+        android:text="\nNouveau Hero"
+        android:visibility="invisible"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/text_ennemie"
+        android:layout_width="wrap_content"
+        android:layout_height="105dp"
+        android:layout_gravity="center"
+        android:text="Gérer vos ennemies"
+        android:visibility="invisible"
+        android:textSize="30sp" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="363dp"
+        android:layout_gravity="top|center"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/logo" />
 
 </FrameLayout>
