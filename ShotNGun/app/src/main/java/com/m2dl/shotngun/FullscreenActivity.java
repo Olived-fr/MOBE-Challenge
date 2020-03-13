@@ -203,9 +203,10 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Démarrer le jeu
-                /*Intent gameActivity = new Intent(getBaseContext(), GameActivity.class);
+
+                Intent gameActivity = new Intent(getBaseContext(), Game.class);
                 gameActivity.putExtra("PATH_LIST", pathList);
-                startActivity(gameActivity);*/
+                startActivity(gameActivity);
             }
         });
 
