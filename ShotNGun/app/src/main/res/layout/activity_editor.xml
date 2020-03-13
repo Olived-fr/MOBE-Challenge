@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Editor.Views.EditorActivity" >
+
+    <com.m2dl.shotngun.Editor.Views.EditorView
+        android:id="@+id/editorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-2dp"
+        android:layout_marginTop="-3dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="3dp"
+        android:background="#BD2121"
+        android:backgroundTint="#781D1D">
+
+
+    </com.m2dl.shotngun.Editor.Views.EditorView>
+
+    <ImageButton
+        android:id="@+id/buttonFiltre1"
+        android:layout_width="78dp"
+        android:layout_height="67dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="30dp"
+        android:adjustViewBounds="true"
+        android:text="Button"
+        android:visibility="visible"
+        tools:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/buttonFiltre2"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_toEndOf="@+id/buttonFiltre1"
+        android:adjustViewBounds="true"
+        android:text="Button"
+        android:visibility="visible"
+        tools:visibility="visible" />
+
+    <Button
+        android:id="@+id/buttonValid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_toEndOf="@+id/buttonFiltre2"
+        android:text="Valider" />
+
+
+</RelativeLayout>

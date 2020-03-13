@@ -1,8 +1,12 @@
 package com.m2dl.shotngun;
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
@@ -16,6 +20,7 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -29,6 +34,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import java.io.File;
@@ -40,6 +46,9 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import android.app.AlertDialog;
+
+import com.m2dl.shotngun.Editor.Views.EditorActivity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,6 +56,10 @@ import androidx.core.app.ActivityCompat;
 
 public class CameraActivity extends AppCompatActivity {
     private static final String TAG = "AndroidCameraApi";
+    private Uri mImageCaptureUri;
+    private static final int PICK_FROM_CAMERA = 1;
+    private static final int CROP_FROM_CAMERA = 2;
+    private static final int PICK_FROM_FILE = 3;
     private ImageButton takePictureButton;
     private RelativeLayout relativeLayoutPhoto;
     private TextureView textureView;
@@ -56,6 +69,8 @@ public class CameraActivity extends AppCompatActivity {
     public static final String CAMERA_FRONT = "1";
     public static final String CAMERA_BACK = "0";
     private Integer idPnj = 0;
+    private ImageView mImageView;
+
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -144,6 +159,7 @@ public class CameraActivity extends AppCompatActivity {
             createCameraPreview();
         }
     };
+
     protected void startBackgroundThread() {
         mBackgroundThread = new HandlerThread("Camera Background");
         mBackgroundThread.start();
@@ -210,9 +226,20 @@ public class CameraActivity extends AppCompatActivity {
                         byte[] bytes = new byte[buffer.capacity()];
                         buffer.get(bytes);
                         save(bytes);
-                      /*  Intent showPicture = new Intent(CameraActivity.this, ShowPictureActivity.class);
+                     /*   Bundle extras = data.getExtras();
+
+                        if (extras != null) {
+                            Bitmap photo = extras.getParcelable("data");
+
+                            mImageView.setImageBitmap(photo);
+                        }
+
+                        File f = new File(mImageCaptureUri.getPath());
+
+                        if (f.exists()) f.delete();*/
+                        Intent showPicture = new Intent(CameraActivity.this, EditorActivity.class);
                         showPicture.putExtra("pathPhoto", file.getPath());
-                        startActivity(showPicture);*/
+                        startActivity(showPicture);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -378,4 +405,5 @@ public class CameraActivity extends AppCompatActivity {
             textureView.setSurfaceTextureListener(textureListener);
         }
     }
+
 }
