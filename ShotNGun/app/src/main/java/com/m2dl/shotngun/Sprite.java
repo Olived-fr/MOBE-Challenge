@@ -15,7 +15,7 @@ public class Sprite {
     protected int width, height;
     protected int x,y; // Position
     protected double vx, vy;
-    final static double interval = 0.9; // délai
+    final static double interval = 1.4; // délai
     protected double g; // gravité
 
     public Bitmap makeBitmap(Context context, int src) {
@@ -37,6 +37,13 @@ public class Sprite {
         } catch (Exception e) {
             Log.e(TAG, "sprite.drawBitmap() failed.");
         }
+    }
+
+    public boolean checkImpact(int x, int y){
+        if(y < this.y + this.height && y > this.y - this.height ){
+            return true;
+        }
+        return false;
     }
 
     public Bitmap getBitmap() {

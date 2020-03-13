@@ -20,10 +20,4 @@ public class Platform extends Sprite {
         y += (int) (vy * interval);
     }
 
-    public boolean checkImpact(int x, int y){
-        if(y < this.y + this.height && y > this.y - this.height ){
-            return true;
-        }
-        return false;
-    }
 }

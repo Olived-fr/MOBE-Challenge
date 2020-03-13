@@ -49,11 +49,11 @@ public class Board extends View {
         paint.setStyle(Paint.Style.FILL);
         sensorManager.registerListener(sensorListener, orientationSensor, 2 * 1000 * 1000);
         player = new Player(screenWidth, screenHeight, context);
-        for(int i = 0; i < 1; i++) {
+        for(int i = 0; i < 25; i++) {
             platforms.add(new Platform(screenWidth, screenHeight));
         }
-        for(Platform platform: platforms) {
-            enemies.add(new Enemy(platform.x, platform.y-platform.height, context));
+        for(int i = 0; i < platforms.size(); i += 2 ) {
+            enemies.add(new Enemy(platforms.get(i).x, platforms.get(i).y-platforms.get(i).height, context));
         }
     }
 
@@ -74,11 +74,11 @@ public class Board extends View {
             if(platform.checkImpact(player.x, player.y)){
                 player.jumping = true;
             }
-            platform.refresh();
+            //platform.refresh();
         }
         for(Enemy enemy: enemies){
             enemy.drawBitmap(canvas, paint);
-            enemy.refresh();
+            //enemy.refresh();
 
         }
         invalidate();
