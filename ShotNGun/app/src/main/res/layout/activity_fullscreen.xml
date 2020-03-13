@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,7 +16,6 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:keepScreenOn="true"
-        android:text="@string/dummy_content"
         android:textColor="#33b5e5"
         android:textSize="50sp"
         android:textStyle="bold" />
@@ -23,29 +23,54 @@
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/frame_content_menu"
+        android:layout_width="358dp"
+        android:layout_height="89dp"
+        android:layout_gravity="center|center_horizontal"
         android:fitsSystemWindows="true">
 
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
+        <ImageButton
+            android:id="@+id/bouton_personnaliser"
+            android:layout_width="175dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="right|center_horizontal"
+            app:srcCompat="@android:drawable/ic_menu_manage" />
 
-            <Button
-                android:id="@+id/dummy_button"
-                style="?metaButtonBarButtonStyle"
-                android:layout_width="0dp"
+        <ImageButton
+            android:id="@+id/bouton_jouer"
+            android:layout_width="180dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|center_horizontal"
+            app:srcCompat="@android:drawable/ic_media_play" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_personnaliser_menu"
+        android:layout_width="293dp"
+        android:layout_height="345dp"
+        android:layout_gravity="center|center_horizontal"
+        android:fitsSystemWindows="true"
+        android:visibility="invisible">
+
+        <ImageButton
+            android:id="@+id/bouton_hero"
+            android:layout_width="175dp"
+            android:layout_height="101dp"
+            android:layout_gravity="top|center_horizontal"
+            app:srcCompat="@android:drawable/btn_plus" />
+
+        <ScrollView
+            android:id="@+id/ennemies_scroll_view"
+            android:layout_width="255dp"
+            android:layout_height="118dp"
+            android:layout_gravity="bottom|center_horizontal">
+
+            <LinearLayout
+                android:id="@+id/scroll_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/dummy_button" />
-
-        </LinearLayout>
+                android:orientation="vertical" />
+        </ScrollView>
     </FrameLayout>
 
 </FrameLayout>
