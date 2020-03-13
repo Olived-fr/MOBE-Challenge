@@ -21,6 +21,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Editor.Views.EditorActivity"/>
         <activity android:name=".CameraActivity"/>
+        <activity android:name=".Game"/>
         <activity android:name=".FullscreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

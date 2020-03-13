@@ -67,12 +67,18 @@ public class Board extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if(player.gameOver){
+            paint.setColor(Color.RED);
+            paint.setTextSize(100);
+            canvas.drawText("GAME OVER", (float) (screenWidth/ 2.0) - 250, (float)(screenHeight /2), paint);
+        }
         player.drawBitmap(canvas, paint);
         player.refresh(screenWidth, screenHeight, player.jumping);
         for(Platform platform: platforms) {
             canvas.drawRect(platform.x, platform.y, platform.x+platform.width, platform.y+platform.height, paint);
             if(platform.checkImpact(player.x, player.y)){
-                player.jumping = true;
+                //player.jumping = true;
+                player.gameOver = true;
             }
             //platform.refresh();
         }

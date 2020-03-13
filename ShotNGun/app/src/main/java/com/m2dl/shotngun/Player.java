@@ -7,7 +7,7 @@ import static android.content.ContentValues.TAG;
 
 public class Player extends Sprite {
 
-    private boolean gameOver;
+    protected boolean gameOver;
     protected boolean jumping;
     protected boolean direction;
 

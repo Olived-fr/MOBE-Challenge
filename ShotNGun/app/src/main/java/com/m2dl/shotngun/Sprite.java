@@ -40,7 +40,7 @@ public class Sprite {
     }
 
     public boolean checkImpact(int x, int y){
-        if(y < this.y + this.height && y > this.y - this.height ){
+        if(y < this.y + this.height && y > this.y - this.height && x < this.x + this.width && x > this.x - this. width ){
             return true;
         }
         return false;
