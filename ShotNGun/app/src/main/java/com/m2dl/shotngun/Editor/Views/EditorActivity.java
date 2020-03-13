@@ -93,7 +93,7 @@ public class EditorActivity extends AppCompatActivity {
                 homePage.putExtra("PICTURE_NAME", namePhoto+".png");
                 homePage.putExtra("PATH_LIST", pathList);
                 homePage.putExtra("id", idPnj);
-
+System.out.println("/////////////////////////////////////////////////////"+f.getAbsolutePath());
                 startActivity(homePage);
 
             }
