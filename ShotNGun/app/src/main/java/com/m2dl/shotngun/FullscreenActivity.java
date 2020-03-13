@@ -56,8 +56,9 @@ public class FullscreenActivity extends AppCompatActivity {
     private FrameLayout frameMenu;
     private FrameLayout frameRoot;
     private FrameLayout framePersonnaliser;
-    private List<String> pathList;
+    private ArrayList<String> pathList;
     private String heroPath;
+    private int idPnj;
 
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -91,6 +92,8 @@ public class FullscreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fullscreen);
 
         pathList = new ArrayList<>();
+        pathList = (ArrayList<String>) getIntent().getSerializableExtra("PATH_LIST");
+        idPnj = getIntent().getIntExtra("id",0);
 
         frameRoot = findViewById(R.id.frame_root_menu);
         frameMenu = findViewById(R.id.frame_content_menu);
@@ -110,33 +113,7 @@ public class FullscreenActivity extends AppCompatActivity {
         scrollView = findViewById(R.id.ennemies_scroll_view);
         scrollLayout = findViewById(R.id.scroll_layout);
 
-        // TODO à retirer
-//        List<ImageView> ennemies = new ArrayList<>();
-//        ImageView imageView = new ImageView(this);
-//        imageView.setBackgroundResource(R.drawable.imagetest);
-//        ennemies.add(imageView);
-//
-//        ImageView imageView2 = new ImageView(this);
-//        imageView2.setBackgroundResource(R.drawable.poutine);
-//        ennemies.add(imageView2);
-//
-//
-//        // TODO à remplacer par getEnnemiesFromStorage
-//        addEnnemiesOnScrollView(ennemies);
-        //fin à retirer
-
-        String elementType = getIntent().getStringExtra("ELEMENT_TYPE");
-        String picturePath = getIntent().getStringExtra("PICTURE_PATH");
-        String namePhoto = getIntent().getStringExtra("NAME_PICTURE");
-
-        System.out.println("elementType : "+elementType+"\npicturePath : "+picturePath+"\nnamePhoto : "+namePhoto);
-
-        if (elementType != null
-                && picturePath != null) {
-            addPath(elementType, picturePath, namePhoto);
-            getEnnemiesFromStorage();
-        }
-
+        getEnnemiesFromStorage();
 
         setAllButtons();
     }
@@ -148,10 +125,8 @@ public class FullscreenActivity extends AppCompatActivity {
     public void addPath(String elementType, String picturePath, String namePhoto) {
         if ("HERO".equals(elementType)) {
             heroPath = picturePath;
-            System.out.println("Nouveau Hero!!!!!!!!!!!!!!!!" + heroPath);
         } else {
             pathList.add(picturePath);
-            System.out.println("Ennemie!!!!!!!!!!!!!!!!" + picturePath);
         }
 
     }
@@ -187,7 +162,6 @@ public class FullscreenActivity extends AppCompatActivity {
                     scrollLayout.removeView(image);
                 }
             });
-            System.out.println("///////////////////////////////"+image+"//////////////////////////////////");
             scrollLayout.addView(image);
         }
     }
@@ -253,6 +227,8 @@ public class FullscreenActivity extends AppCompatActivity {
                 //ouverture de l'appareil photo
                 Intent cameraActivity = new Intent(getBaseContext(), CameraActivity.class);
                 cameraActivity.putExtra("ELEMENT_TYPE", "HERO");
+                cameraActivity.putExtra("PATH_LIST", pathList);
+                cameraActivity.putExtra("id", idPnj);
                 startActivity(cameraActivity);
             }
         });
@@ -263,6 +239,8 @@ public class FullscreenActivity extends AppCompatActivity {
                 //ouverture de l'appareil photo
                 Intent cameraActivity = new Intent(getBaseContext(), CameraActivity.class);
                 cameraActivity.putExtra("ELEMENT_TYPE", "ENNEMIE");
+                cameraActivity.putExtra("PATH_LIST", pathList);
+                cameraActivity.putExtra("id", idPnj);
                 startActivity(cameraActivity);
             }
         });
