@@ -30,7 +30,6 @@ public class EditorActivity extends AppCompatActivity {
 
     private EditorView viewtest;
     static String pimpedPhoto, namePhoto;
-    private ImageButton buttonFiltre1, buttonFiltre2;
     private Button buttonValid;
 
     @Override
@@ -41,22 +40,6 @@ public class EditorActivity extends AppCompatActivity {
         namePhoto = intent.getStringExtra("namePhoto");
         setContentView(R.layout.activity_editor);
         viewtest =(EditorView) findViewById(R.id.editorView);
-        buttonFiltre1 = findViewById(R.id.buttonFiltre1);
-        buttonFiltre1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewtest.getPoutine("fromage");
-            }
-        });
-
-        buttonFiltre2 = findViewById(R.id.buttonFiltre2);
-        buttonFiltre2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewtest.getPoutine("effiloché");
-            }
-        });
-
         buttonValid = findViewById(R.id.buttonValid);
         buttonValid.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,14 +70,6 @@ public class EditorActivity extends AppCompatActivity {
 
                 viewtest.validImage().compress(Bitmap.CompressFormat.JPEG, 100, fOut);
 
-                ExifInterface exif = null;
-
-                try {
-                    exif = new ExifInterface(f.getPath());
-                    exif.saveAttributes();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
             }
         });

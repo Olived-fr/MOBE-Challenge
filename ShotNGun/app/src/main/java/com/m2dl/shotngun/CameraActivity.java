@@ -216,12 +216,11 @@ public class CameraActivity extends AppCompatActivity {
             }
             File myDir = new File(Environment.getExternalStorageDirectory() +
                     File.separator + "shotncut/"); //pour créer le repertoire dans lequel on va mettre notre fichier
-            Boolean success=true;
             if (!myDir.exists()) {
-                success = myDir.mkdir(); //On crée le répertoire (s'il n'existe pas!!)*
+                myDir.mkdir(); //On crée le répertoire (s'il n'existe pas!!)*
                 myDir = new File(Environment.getExternalStorageDirectory() +
                         File.separator + "shotncut/photo/");
-                success = myDir.mkdir(); //On crée le répertoire (s'il n'existe pas!!)*
+                myDir.mkdir(); //On crée le répertoire (s'il n'existe pas!!)*
 
             }
             final File file = new File(Environment.getExternalStorageDirectory()+"/shotncut/photo/" + name + ".jpg");
