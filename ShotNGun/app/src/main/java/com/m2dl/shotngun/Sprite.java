@@ -18,12 +18,13 @@ public class Sprite {
     final static double interval = 1.4; // délai
     protected double g; // gravité
 
-    public Bitmap makeBitmap(Context context, int src) {
+    public Bitmap makeBitmap(Context context, String src) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
         options.inSampleSize = 2;
         try {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), src, options);
+            bitmap = BitmapFactory.decodeFile(src);
+            bitmap = Bitmap.createScaledBitmap(bitmap,80,80,true);
         } catch (Exception e) {
             Log.e(TAG, "sprite.setBitmap() failed.");
             bitmap = BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher , options);

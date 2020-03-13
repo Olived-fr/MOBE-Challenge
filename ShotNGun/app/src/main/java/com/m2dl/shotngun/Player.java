@@ -12,11 +12,11 @@ public class Player extends Sprite {
     protected boolean direction;
 
     public Player(int screenWidth, int screenHeight, Context context) {
-        this.makeBitmap(context, R.mipmap.ic_launcher_round);
+        this.makeBitmap(context, "/storage/emulated/0/shotncut/cut/HERO.png");
         this.x = screenWidth / 2;
         this.y = screenHeight;
-        this.width = 40;
-        this.height = 70;
+        this.width = 80;
+        this.height = 80;
         this.direction = true;
         this.vx = 0;
         this.vy = 0.7;
