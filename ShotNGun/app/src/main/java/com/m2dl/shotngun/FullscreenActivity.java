@@ -203,10 +203,9 @@ public class FullscreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Démarrer le jeu
-                frameRoot.setBackgroundResource(R.drawable.scroll_background);
-                frameMenu.setVisibility(View.INVISIBLE);
-                boutonQuitter.setVisibility(View.VISIBLE);
-                logo.setVisibility(View.INVISIBLE);
+                /*Intent gameActivity = new Intent(getBaseContext(), GameActivity.class);
+                gameActivity.putExtra("PATH_LIST", pathList);
+                startActivity(gameActivity);*/
             }
         });
 
