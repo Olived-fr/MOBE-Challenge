@@ -1,27 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frame_root_menu"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#FAF0C4"
     tools:context=".FullscreenActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->
-    <TextView
-        android:id="@+id/fullscreen_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:keepScreenOn="true"
-        android:textColor="#33b5e5"
-        android:textSize="50sp"
-        android:textStyle="bold" />
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
     <FrameLayout
         android:id="@+id/frame_content_menu"
         android:layout_width="358dp"
@@ -44,6 +33,8 @@
             app:srcCompat="@android:drawable/ic_media_play" />
     </FrameLayout>
 
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
     <FrameLayout
         android:id="@+id/frame_personnaliser_menu"
         android:layout_width="293dp"
@@ -54,16 +45,24 @@
 
         <ImageButton
             android:id="@+id/bouton_hero"
-            android:layout_width="175dp"
-            android:layout_height="101dp"
+            android:layout_width="wrap_content"
+            android:layout_height="107dp"
             android:layout_gravity="top|center_horizontal"
-            app:srcCompat="@android:drawable/btn_plus" />
+            app:srcCompat="@drawable/hero" />
+
+        <ImageButton
+            android:id="@+id/bouton_ajout_ennemie"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            app:srcCompat="@drawable/person_add" />
 
         <ScrollView
             android:id="@+id/ennemies_scroll_view"
-            android:layout_width="255dp"
-            android:layout_height="118dp"
-            android:layout_gravity="bottom|center_horizontal">
+            android:layout_width="157dp"
+            android:layout_height="212dp"
+            android:layout_gravity="bottom|left"
+            android:background="@drawable/scroll_background">
 
             <LinearLayout
                 android:id="@+id/scroll_layout"
@@ -72,5 +71,15 @@
                 android:orientation="vertical" />
         </ScrollView>
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:keepScreenOn="true"
+        android:textColor="#33b5e5"
+        android:textSize="50sp"
+        android:textStyle="bold" />
 
 </FrameLayout>

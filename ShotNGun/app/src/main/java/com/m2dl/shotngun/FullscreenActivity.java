@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -37,9 +38,15 @@ public class FullscreenActivity extends AppCompatActivity {
      */
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
-    private View mContentView;
-    ScrollView scrollView;
-
+    private ScrollView scrollView;
+    private ImageButton boutonJouer;
+    private ImageButton boutonPersonnaliser;
+    private ImageButton boutonNouveauHero;
+    private ImageButton ajouterEnnemie;
+    private LinearLayout scrollLayout;
+    private FrameLayout frameMenu;
+    private FrameLayout frameRoot;
+    private FrameLayout framePersonnaliser;
 
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -47,6 +54,7 @@ public class FullscreenActivity extends AppCompatActivity {
         public void run() {
         }
     };
+
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -57,6 +65,7 @@ public class FullscreenActivity extends AppCompatActivity {
             }
         }
     };
+
     private final Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
@@ -64,37 +73,23 @@ public class FullscreenActivity extends AppCompatActivity {
         }
     };
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_fullscreen);
 
-        FrameLayout frameMenu = findViewById(R.id.frame_content_menu);
-        FrameLayout framePersonnaliser = findViewById(R.id.frame_personnaliser_menu);
+        frameRoot = findViewById(R.id.frame_root_menu);
+        frameMenu = findViewById(R.id.frame_content_menu);
+        framePersonnaliser = findViewById(R.id.frame_personnaliser_menu);
 
-        ImageButton boutonJouer = findViewById(R.id.bouton_jouer);
-        ImageButton boutonPersonnaliser = findViewById(R.id.bouton_personnaliser);
-
-        boutonJouer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Démarrer le jeu
-            }
-        });
-
-        boutonPersonnaliser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // On change de layout
-                frameMenu.setVisibility(View.INVISIBLE);
-                framePersonnaliser.setVisibility(View.VISIBLE);
-            }
-        });
+        boutonJouer = findViewById(R.id.bouton_jouer);
+        boutonPersonnaliser = findViewById(R.id.bouton_personnaliser);
+        boutonNouveauHero = findViewById(R.id.bouton_hero);
+        ajouterEnnemie = findViewById(R.id.bouton_ajout_ennemie);
 
         scrollView = findViewById(R.id.ennemies_scroll_view);
-        LinearLayout scrollLayout = findViewById(R.id.scroll_layout);
+        scrollLayout = findViewById(R.id.scroll_layout);
 
         // TODO à retirer
         List<ImageView> ennemies = new ArrayList<>();
@@ -108,10 +103,12 @@ public class FullscreenActivity extends AppCompatActivity {
         //fin à retirer
 
         // TODO à remplacer par getEnnemiesFromStorage
-        addEnnemiesOnScrollView(ennemies,scrollLayout);
+        addEnnemiesOnScrollView(ennemies);
+
+        setAllButtons();
     }
 
-    public void getEnnemiesFromStorage(List<String> pathList, LinearLayout scrollLayout) {
+    public void getEnnemiesFromStorage(List<String> pathList) {
 
         List<ImageView> imageViews = new ArrayList<>();
 
@@ -125,10 +122,10 @@ public class FullscreenActivity extends AppCompatActivity {
             //imageView.setBackgroundResource(R.drawable.imagetest);
         }
 
-        addEnnemiesOnScrollView(imageViews, scrollLayout);
+        addEnnemiesOnScrollView(imageViews);
     }
 
-    public void addEnnemiesOnScrollView(List<ImageView> ennemies, LinearLayout scrollLayout) {
+    public void addEnnemiesOnScrollView(List<ImageView> ennemies) {
         for (ImageView image : ennemies) {
 
             image.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +138,7 @@ public class FullscreenActivity extends AppCompatActivity {
             scrollLayout.addView(image);
         }
     }
-    
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -172,5 +169,48 @@ public class FullscreenActivity extends AppCompatActivity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    public void setAllButtons() {
+        boutonJouer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Démarrer le jeu
+                System.out.println("//////////////////////////////////////////");
+                frameRoot.setBackgroundResource(R.drawable.scroll_background);
+                frameMenu.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        boutonPersonnaliser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // On change de layout
+                frameMenu.setVisibility(View.INVISIBLE);
+                framePersonnaliser.setVisibility(View.VISIBLE);
+            }
+        });
+
+        boutonNouveauHero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ouverture de l'appareil photo
+                //TODO Décommenter quand le merge sera effectué
+                /*Intent mapActivity = new Intent(getBaseContext(), CameraActivity.class);
+                intent.putExtra("ELEMENT_TYPE", "HERO");
+                startActivity(mapActivity);*/
+            }
+        });
+
+        ajouterEnnemie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ouverture de l'appareil photo
+                //TODO Décommenter quand le merge sera effectué
+                /*Intent mapActivity = new Intent(getBaseContext(), CameraActivity.class);
+                intent.putExtra("ELEMENT_TYPE", "ENNEMIE");
+                startActivity(mapActivity);*/
+            }
+        });
     }
 }
