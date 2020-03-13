@@ -33,6 +33,23 @@
             android:background="#FAF0C4"
             android:layout_gravity="left|center_horizontal"
             app:srcCompat="@android:drawable/ic_media_play" />
+
+        <TextView
+            android:id="@+id/testJouer"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:text="Personnalisation"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textperso"
+            android:layout_width="293dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:text="Jouer"
+            android:textSize="18sp" />
+
     </FrameLayout>
 
     <!-- This FrameLayout insets its children based on system windows using

@@ -68,8 +68,9 @@ public class CameraActivity extends AppCompatActivity {
     private ImageButton imageButton;
     public static final String CAMERA_FRONT = "1";
     public static final String CAMERA_BACK = "0";
-    private Integer idPnj = 0;
+    private int idPnj;
     private String name;
+    private ArrayList<String> pathList;
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
@@ -101,7 +102,10 @@ public class CameraActivity extends AppCompatActivity {
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
 
+        idPnj = getIntent().getIntExtra("id",0);
+
         elementType = getIntent().getStringExtra("ELEMENT_TYPE");
+        pathList = (ArrayList<String>) getIntent().getSerializableExtra("PATH_LIST");
 
         textureView.setSurfaceTextureListener(textureListener);
         takePictureButton = findViewById(R.id.btn_takepicture);
@@ -255,7 +259,9 @@ public class CameraActivity extends AppCompatActivity {
                         Intent showPicture = new Intent(CameraActivity.this, EditorActivity.class);
                         showPicture.putExtra("ELEMENT_TYPE", elementType);
                         showPicture.putExtra("pathPhoto", file.getPath());
+                        showPicture.putExtra("PATH_LIST", pathList);
                         showPicture.putExtra("namePhoto", name);
+                        showPicture.putExtra("id", idPnj);
                         startActivity(showPicture);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

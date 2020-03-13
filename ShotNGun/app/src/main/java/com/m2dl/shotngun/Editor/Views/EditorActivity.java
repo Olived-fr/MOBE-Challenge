@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,14 +35,20 @@ public class EditorActivity extends AppCompatActivity {
     static String pimpedPhoto, namePhoto;
     private Button buttonValid;
     private String elementType;
+    private ArrayList<String> pathList;
+    private int idPnj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
+
+        idPnj = getIntent().getIntExtra("id",0);
         elementType = getIntent().getStringExtra("ELEMENT_TYPE");
+        pathList = (ArrayList<String>) getIntent().getSerializableExtra("PATH_LIST");
         pimpedPhoto = intent.getStringExtra("pathPhoto");
         namePhoto = intent.getStringExtra("namePhoto");
+
         System.out.println();
         setContentView(R.layout.activity_editor);
         viewtest = (EditorView) findViewById(R.id.editorView);
@@ -75,13 +82,30 @@ public class EditorActivity extends AppCompatActivity {
 
                 viewtest.validImage().compress(Bitmap.CompressFormat.JPEG, 100, fOut);
 
+                if (elementType != null
+                        && f.getAbsolutePath() != null) {
+                    addPath(elementType, f.getAbsolutePath(), namePhoto);
+                }
+
                 Intent homePage = new Intent(getBaseContext(), FullscreenActivity.class);
                 homePage.putExtra("ELEMENT_TYPE", elementType);
                 homePage.putExtra("PICTURE_PATH", f.getAbsolutePath());
                 homePage.putExtra("PICTURE_NAME", namePhoto+".png");
+                homePage.putExtra("PATH_LIST", pathList);
+                homePage.putExtra("id", idPnj);
                 startActivity(homePage);
 
             }
         });
+    }
+
+    public void addPath(String elementType, String picturePath, String namePhoto) {
+        if ("ENNEMIE".equals(elementType)) {
+            if (pathList == null) {
+                pathList = new ArrayList<>();
+            }
+            pathList.add(picturePath);
+        }
+
     }
 }
