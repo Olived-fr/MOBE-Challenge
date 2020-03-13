@@ -69,7 +69,7 @@ public class CameraActivity extends AppCompatActivity {
     public static final String CAMERA_FRONT = "1";
     public static final String CAMERA_BACK = "0";
     private Integer idPnj = 0;
-    private ImageView mImageView;
+    private String name;
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
@@ -209,13 +209,23 @@ public class CameraActivity extends AppCompatActivity {
             }
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, rotation);
             System.out.println("editTextName.getText() == null) {" + editTextName.getTextSize() + "}");
-            String name = String.valueOf(editTextName.getText());
+            name = String.valueOf(editTextName.getText());
             if(name.equals("")) {
                 name = "pnj" + idPnj;
                 idPnj++;
             }
+            File myDir = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + "shotncut/"); //pour créer le repertoire dans lequel on va mettre notre fichier
+            Boolean success=true;
+            if (!myDir.exists()) {
+                success = myDir.mkdir(); //On crée le répertoire (s'il n'existe pas!!)*
+                myDir = new File(Environment.getExternalStorageDirectory() +
+                        File.separator + "shotncut/photo/");
+                success = myDir.mkdir(); //On crée le répertoire (s'il n'existe pas!!)*
 
-            final File file = new File(Environment.getExternalStorageDirectory()+"/" + name + ".jpg");
+            }
+            final File file = new File(Environment.getExternalStorageDirectory()+"/shotncut/photo/" + name + ".jpg");
+
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader reader) {
@@ -226,19 +236,10 @@ public class CameraActivity extends AppCompatActivity {
                         byte[] bytes = new byte[buffer.capacity()];
                         buffer.get(bytes);
                         save(bytes);
-                     /*   Bundle extras = data.getExtras();
 
-                        if (extras != null) {
-                            Bitmap photo = extras.getParcelable("data");
-
-                            mImageView.setImageBitmap(photo);
-                        }
-
-                        File f = new File(mImageCaptureUri.getPath());
-
-                        if (f.exists()) f.delete();*/
                         Intent showPicture = new Intent(CameraActivity.this, EditorActivity.class);
                         showPicture.putExtra("pathPhoto", file.getPath());
+                        showPicture.putExtra("namePhoto", name);
                         startActivity(showPicture);
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

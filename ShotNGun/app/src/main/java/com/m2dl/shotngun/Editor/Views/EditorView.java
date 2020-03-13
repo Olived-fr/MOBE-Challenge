@@ -77,10 +77,11 @@ System.out.println("x "+ x + "y "+ y + "x2 "+ x2 + "y2 "+ y2 + "x3 "+ x3 + "y3 "
                 y2 = event.getY();
             }
 
-            invalidate();
                 break;
             case MotionEvent.ACTION_MOVE:
-             //   x = event.getX();
+                invalidate();
+
+                //   x = event.getX();
             //    y = event.getY();
              //   invalidate();
                 break;
@@ -91,92 +92,22 @@ System.out.println("x "+ x + "y "+ y + "x2 "+ x2 + "y2 "+ y2 + "x3 "+ x3 + "y3 "
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (firstTime) {
             int w = canvas.getClipBounds().width();
             int h = canvas.getClipBounds().height();
             canvas.drawBitmap(bitmap2, null, new RectF(0, 0, w, h),  null);
 
-        } else {
-            int w = canvas.getClipBounds().width();
-            int h = canvas.getClipBounds().height();
-            canvas.drawBitmap(makeTintedBitmap(bitmap2, color), null, new RectF(0, 0, w, h),  null);
-        }
 
-        if(poutine1.equals("fromage")) {
-            Drawable d = getResources().getDrawable(R.drawable.camera_background);
-            bitmap = drawableToBitmap(d);
 
-            if (poutineClick1 == 1 && priorityg.equals("fromage")) {
-
-                if(priority.equals("fromage") && isPoutine == 1) {
-                    x = coordPoutine1x;
-                    y = coordPoutine1y;
-                    isPoutinetest = 1;
-                    priority = "";
-                }
-
-                canvas.drawBitmap(bitmap, x, y, null);
-                coordPoutine1x = x;
-                coordPoutine1y = y;
-
-            } else if (poutineClick1 != 10) {
-                canvas.drawBitmap(bitmap, coordPoutine1x, coordPoutine1y, null);
-            }
-        }
-
-        if(poutine2.equals("effiloché")) {
-            Drawable dr = getResources().getDrawable(R.drawable.camera_background);
-            //On transforme l'objet Drawable en Bitmap pour redéfinir sa taille
-            bitmap3 = ((BitmapDrawable) dr).getBitmap();
-
-            if (poutineClick2 == 2 && priorityg.equals("effiloché")) {
-
-                if(priority.equals("effiloché") && isPoutine == 2) {
-                    x = coordPoutine2x;
-                    y = coordPoutine2y;
-                    isPoutinetest = 2;
-                    priority = "";
-                }
-
-                canvas.drawBitmap(bitmap3, x, y, null);
-                coordPoutine2x = x;
-                coordPoutine2y = y;
-
-            } else if (poutineClick2 != 20){
-                canvas.drawBitmap(bitmap3, coordPoutine2x, coordPoutine2y, null);
-            }
-        }
         if (x != -1 && y != -1 && x2 !=-1 && y2 != -1) {
-            System.out.println("x "+ x + "y "+ y);
-            System.out.println("x2 "+ x2 + "y2 "+ y2);
-            Matrix matrix = new Matrix();
-// resize the bit map
-            matrix.postScale(200, 200);
-            System.out.println("(x2- x)"+ (x2- x) + "y2 - y "+ (y2 - y));
-            System.out.println( "x2 "+ x2 + "y2 "+ y2);
-// recreate the new Bitmap
             canvas.drawRect(x, y, x2, y2, myPaint);
-            System.out.println( "b "+ bitmap2.getHeight() + "c "+ canvas.getHeight());
-            System.out.println( "b "+ ((bitmap2.getHeight()*x)/canvas.getHeight()) + "c "+ ((bitmap2.getWidth()*y)/canvas.getWidth()));
-
-          //  bitmap2.getHeight()
-
             bitmap2 = Bitmap.createBitmap (bitmap2,(int)((bitmap2.getWidth()*x)/canvas.getWidth()),(int)((bitmap2.getHeight()*y)/canvas.getHeight()),(int)  500, (int) (500));
             x =-1;
             y = -1;
             x2 = -1;
             y2 = -1;
+            invalidate();
 
         }
-    }
-
-    public Bitmap makeTintedBitmap(Bitmap src, int color) {
-        Bitmap result = Bitmap.createBitmap(src.getWidth(), src.getHeight(), src.getConfig());
-        Canvas c = new Canvas(result);
-        Paint paint = new Paint();
-        paint.setColorFilter(new LightingColorFilter(color,colorMagnet));
-        c.drawBitmap(src, 0, 0, paint);
-        return result;
     }
 
     public void getPoutine (String poutine) {
@@ -222,19 +153,6 @@ System.out.println("x "+ x + "y "+ y + "x2 "+ x2 + "y2 "+ y2 + "x3 "+ x3 + "y3 "
         }
         invalidate();
 
-    }
-
-    public static Bitmap drawableToBitmap (Drawable drawable) {
-
-        if (drawable instanceof BitmapDrawable) {
-            return ((BitmapDrawable)drawable).getBitmap();
-        }
-
-        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
-        drawable.draw(canvas);
-        return bitmap;
     }
 
     public Bitmap validImage() {

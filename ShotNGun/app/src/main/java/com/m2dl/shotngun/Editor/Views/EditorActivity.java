@@ -26,13 +26,10 @@ import java.io.IOException;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-
-
 public class EditorActivity extends AppCompatActivity {
 
     private EditorView viewtest;
-    static String pimpedPhoto;
+    static String pimpedPhoto, namePhoto;
     private ImageButton buttonFiltre1, buttonFiltre2;
     private Button buttonValid;
 
@@ -41,6 +38,7 @@ public class EditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         pimpedPhoto = intent.getStringExtra("pathPhoto");
+        namePhoto = intent.getStringExtra("namePhoto");
         setContentView(R.layout.activity_editor);
         viewtest =(EditorView) findViewById(R.id.editorView);
         buttonFiltre1 = findViewById(R.id.buttonFiltre1);
@@ -63,8 +61,15 @@ public class EditorActivity extends AppCompatActivity {
         buttonValid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                File myDir = new File(Environment.getExternalStorageDirectory() +
+                        File.separator + "shotncut/cut/"); //pour créer le repertoire dans lequel on va mettre notre fichier
+                Boolean success=true;
+                if (!myDir.exists()) {
+                    success = myDir.mkdir(); //On crée le répertoire (s'il n'existe pas!!)
+                }
                 File f = new File(Environment.getExternalStorageDirectory()
-                        .toString() + "/" + "temp" + ".png");
+                        .toString() + "/shotncut/cut/" + namePhoto + ".png");
 
                 try {
                     f.createNewFile();
