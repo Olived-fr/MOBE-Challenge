@@ -88,6 +88,7 @@ public class CameraActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
+    private Speaker speaker;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +100,12 @@ public class CameraActivity extends AppCompatActivity {
         relativeLayoutPhoto = findViewById(R.id.relativeLayoutPhoto);
         editTextName = findViewById(R.id.editTextName);
         imageButton = findViewById(R.id.imageButton);
+        speaker = new Speaker();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECORD_AUDIO},
+                    1);
+        }
         assert takePictureButton != null;
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -208,7 +215,6 @@ public class CameraActivity extends AppCompatActivity {
                 rotation = 90;
             }
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, rotation);
-            System.out.println("editTextName.getText() == null) {" + editTextName.getTextSize() + "}");
             name = String.valueOf(editTextName.getText());
             if(name.equals("")) {
                 name = "pnj" + idPnj;
@@ -235,7 +241,6 @@ public class CameraActivity extends AppCompatActivity {
                         byte[] bytes = new byte[buffer.capacity()];
                         buffer.get(bytes);
                         save(bytes);
-
                         Intent showPicture = new Intent(CameraActivity.this, EditorActivity.class);
                         showPicture.putExtra("pathPhoto", file.getPath());
                         showPicture.putExtra("namePhoto", name);
