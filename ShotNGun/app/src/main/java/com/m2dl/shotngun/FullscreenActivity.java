@@ -5,27 +5,36 @@ import android.annotation.SuppressLint;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
 public class FullscreenActivity extends AppCompatActivity {
-    /**
-     * Whether or not the system UI should be auto-hidden after
-     * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
-     */
-    private static final boolean AUTO_HIDE = true;
-
-    /**
-     * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
-     * user interaction before hiding the system UI.
-     */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
 
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -33,25 +42,30 @@ public class FullscreenActivity extends AppCompatActivity {
      */
     private static final int UI_ANIMATION_DELAY = 300;
     private final Handler mHideHandler = new Handler();
-    private View mContentView;
+    private ScrollView scrollView;
+    private ImageButton boutonJouer;
+    private ImageButton boutonPersonnaliser;
+    private ImageButton boutonNouveauHero;
+    private ImageButton ajouterEnnemie;
+    private ImageButton boutonRetour;
+    private ImageButton boutonQuitter;
+    private TextView textHero;
+    private TextView textEnnemie;
+    private ImageView logo;
+    private LinearLayout scrollLayout;
+    private FrameLayout frameMenu;
+    private FrameLayout frameRoot;
+    private FrameLayout framePersonnaliser;
+    private List<String> pathList;
+    private String heroPath;
+
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
         @Override
         public void run() {
-            // Delayed removal of status and navigation bar
-
-            // Note that some of these constants are new as of API 16 (Jelly Bean)
-            // and API 19 (KitKat). It is safe to use them, as they are inlined
-            // at compile-time and do nothing on earlier devices.
-            mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                    | View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
-    private View mControlsView;
+
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -60,28 +74,13 @@ public class FullscreenActivity extends AppCompatActivity {
             if (actionBar != null) {
                 actionBar.show();
             }
-            mControlsView.setVisibility(View.VISIBLE);
         }
     };
-    private boolean mVisible;
+
     private final Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
             hide();
-        }
-    };
-    /**
-     * Touch listener to use for in-layout UI controls to delay hiding the
-     * system UI. This is to prevent the jarring behavior of controls going away
-     * while interacting with activity UI.
-     */
-    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-            }
-            return false;
         }
     };
 
@@ -91,23 +90,106 @@ public class FullscreenActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_fullscreen);
 
-        mVisible = true;
-        mControlsView = findViewById(R.id.fullscreen_content_controls);
-        mContentView = findViewById(R.id.fullscreen_content);
+        pathList = new ArrayList<>();
+
+        frameRoot = findViewById(R.id.frame_root_menu);
+        frameMenu = findViewById(R.id.frame_content_menu);
+        framePersonnaliser = findViewById(R.id.frame_personnaliser_menu);
+
+        textEnnemie = findViewById(R.id.text_ennemie);
+        textHero = findViewById(R.id.text_hero);
+        logo = findViewById(R.id.logo);
+
+        boutonJouer = findViewById(R.id.bouton_jouer);
+        boutonPersonnaliser = findViewById(R.id.bouton_personnaliser);
+        boutonRetour = findViewById(R.id.bouton_retour);
+        boutonQuitter = findViewById(R.id.bouton_quitter);
+        boutonNouveauHero = findViewById(R.id.bouton_hero);
+        ajouterEnnemie = findViewById(R.id.bouton_ajout_ennemie);
+
+        scrollView = findViewById(R.id.ennemies_scroll_view);
+        scrollLayout = findViewById(R.id.scroll_layout);
+
+        // TODO à retirer
+//        List<ImageView> ennemies = new ArrayList<>();
+//        ImageView imageView = new ImageView(this);
+//        imageView.setBackgroundResource(R.drawable.imagetest);
+//        ennemies.add(imageView);
+//
+//        ImageView imageView2 = new ImageView(this);
+//        imageView2.setBackgroundResource(R.drawable.poutine);
+//        ennemies.add(imageView2);
+//
+//
+//        // TODO à remplacer par getEnnemiesFromStorage
+//        addEnnemiesOnScrollView(ennemies);
+        //fin à retirer
+
+        String elementType = getIntent().getStringExtra("ELEMENT_TYPE");
+        String picturePath = getIntent().getStringExtra("PICTURE_PATH");
+        String namePhoto = getIntent().getStringExtra("NAME_PICTURE");
+
+        System.out.println("elementType : "+elementType+"\npicturePath : "+picturePath+"\nnamePhoto : "+namePhoto);
+
+        if (elementType != null
+                && picturePath != null) {
+            addPath(elementType, picturePath, namePhoto);
+            getEnnemiesFromStorage();
+        }
 
 
-        // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggle();
+        setAllButtons();
+    }
+
+    public void setPathList() {
+
+    }
+
+    public void addPath(String elementType, String picturePath, String namePhoto) {
+        if ("HERO".equals(elementType)) {
+            heroPath = picturePath;
+            System.out.println("Nouveau Hero!!!!!!!!!!!!!!!!" + heroPath);
+        } else {
+            pathList.add(picturePath);
+            System.out.println("Ennemie!!!!!!!!!!!!!!!!" + picturePath);
+        }
+
+    }
+
+    public void getEnnemiesFromStorage() {
+
+        List<ImageView> imageViews = new ArrayList<>();
+
+        if (pathList != null
+                && !pathList.isEmpty()) {
+            for (String imagePath : pathList) {
+
+                Bitmap bmp = BitmapFactory.decodeFile(imagePath);
+                //Drawable image = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmp, 50, 50, true));
+                Drawable image = new BitmapDrawable(getResources(), bmp);
+                ImageView imageView = new ImageView(this);
+                imageView.setBackground(image);
+                imageViews.add(imageView);
+                //imageView.setBackgroundResource(R.drawable.imagetest);
             }
-        });
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+            addEnnemiesOnScrollView(imageViews);
+        }
+    }
+
+
+    public void addEnnemiesOnScrollView(List<ImageView> ennemies) {
+        for (ImageView image : ennemies) {
+
+            image.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    scrollLayout.removeView(image);
+                }
+            });
+            System.out.println("///////////////////////////////"+image+"//////////////////////////////////");
+            scrollLayout.addView(image);
+        }
     }
 
     @Override
@@ -120,13 +202,6 @@ public class FullscreenActivity extends AppCompatActivity {
         delayedHide(100);
     }
 
-    private void toggle() {
-        if (mVisible) {
-            hide();
-        } else {
-            show();
-        }
-    }
 
     private void hide() {
         // Hide UI first
@@ -134,24 +209,10 @@ public class FullscreenActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        mControlsView.setVisibility(View.GONE);
-        mVisible = false;
 
         // Schedule a runnable to remove the status and navigation bar after a delay
         mHideHandler.removeCallbacks(mShowPart2Runnable);
         mHideHandler.postDelayed(mHidePart2Runnable, UI_ANIMATION_DELAY);
-    }
-
-    @SuppressLint("InlinedApi")
-    private void show() {
-        // Show the system bar
-        mContentView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
-        mVisible = true;
-
-        // Schedule a runnable to display UI elements after a delay
-        mHideHandler.removeCallbacks(mHidePart2Runnable);
-        mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
     }
 
     /**
@@ -161,5 +222,76 @@ public class FullscreenActivity extends AppCompatActivity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    public void setAllButtons() {
+        boutonJouer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Démarrer le jeu
+                frameRoot.setBackgroundResource(R.drawable.scroll_background);
+                frameMenu.setVisibility(View.INVISIBLE);
+                boutonQuitter.setVisibility(View.VISIBLE);
+                logo.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        boutonPersonnaliser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // On change de layout
+                frameMenu.setVisibility(View.INVISIBLE);
+                framePersonnaliser.setVisibility(View.VISIBLE);
+                boutonRetour.setVisibility(View.VISIBLE);
+                textEnnemie.setVisibility(View.VISIBLE);
+                textHero.setVisibility(View.VISIBLE);
+                logo.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        boutonNouveauHero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ouverture de l'appareil photo
+                Intent cameraActivity = new Intent(getBaseContext(), CameraActivity.class);
+                cameraActivity.putExtra("ELEMENT_TYPE", "HERO");
+                startActivity(cameraActivity);
+            }
+        });
+
+        ajouterEnnemie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ouverture de l'appareil photo
+                Intent cameraActivity = new Intent(getBaseContext(), CameraActivity.class);
+                cameraActivity.putExtra("ELEMENT_TYPE", "ENNEMIE");
+                startActivity(cameraActivity);
+            }
+        });
+
+        boutonRetour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //retour vers le menu principal
+                frameMenu.setVisibility(View.VISIBLE);
+                framePersonnaliser.setVisibility(View.INVISIBLE);
+                boutonRetour.setVisibility(View.INVISIBLE);
+                textEnnemie.setVisibility(View.INVISIBLE);
+                textHero.setVisibility(View.INVISIBLE);
+                logo.setVisibility(View.VISIBLE);
+            }
+        });
+
+        boutonQuitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //arret du jeu
+                frameMenu.setVisibility(View.VISIBLE);
+                framePersonnaliser.setVisibility(View.INVISIBLE);
+                boutonQuitter.setVisibility(View.INVISIBLE);
+                frameRoot.setBackgroundColor(0xFFFAF0C4);
+                logo.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }
