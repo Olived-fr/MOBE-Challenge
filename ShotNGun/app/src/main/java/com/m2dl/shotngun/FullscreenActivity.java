@@ -57,6 +57,7 @@ public class FullscreenActivity extends AppCompatActivity {
     private FrameLayout frameRoot;
     private FrameLayout framePersonnaliser;
     private List<String> pathList;
+    private String heroPath;
 
     private final Runnable mHidePart2Runnable = new Runnable() {
         @SuppressLint("InlinedApi")
@@ -89,6 +90,8 @@ public class FullscreenActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_fullscreen);
 
+        pathList = new ArrayList<>();
+
         frameRoot = findViewById(R.id.frame_root_menu);
         frameMenu = findViewById(R.id.frame_content_menu);
         framePersonnaliser = findViewById(R.id.frame_personnaliser_menu);
@@ -108,36 +111,70 @@ public class FullscreenActivity extends AppCompatActivity {
         scrollLayout = findViewById(R.id.scroll_layout);
 
         // TODO à retirer
-        List<ImageView> ennemies = new ArrayList<>();
-        ImageView imageView = new ImageView(this);
-        imageView.setBackgroundResource(R.drawable.imagetest);
-        ennemies.add(imageView);
-
-        ImageView imageView2 = new ImageView(this);
-        imageView2.setBackgroundResource(R.drawable.poutine);
-        ennemies.add(imageView2);
+//        List<ImageView> ennemies = new ArrayList<>();
+//        ImageView imageView = new ImageView(this);
+//        imageView.setBackgroundResource(R.drawable.imagetest);
+//        ennemies.add(imageView);
+//
+//        ImageView imageView2 = new ImageView(this);
+//        imageView2.setBackgroundResource(R.drawable.poutine);
+//        ennemies.add(imageView2);
+//
+//
+//        // TODO à remplacer par getEnnemiesFromStorage
+//        addEnnemiesOnScrollView(ennemies);
         //fin à retirer
 
-        // TODO à remplacer par getEnnemiesFromStorage
-        addEnnemiesOnScrollView(ennemies);
-        //getEnnemiesFromStorage();
+        String elementType = getIntent().getStringExtra("ELEMENT_TYPE");
+        String picturePath = getIntent().getStringExtra("PICTURE_PATH");
+        String namePhoto = getIntent().getStringExtra("NAME_PICTURE");
+
+        System.out.println("elementType : "+elementType+"\npicturePath : "+picturePath+"\nnamePhoto : "+namePhoto);
+
+        if (elementType != null
+                && picturePath != null) {
+            addPath(elementType, picturePath, namePhoto);
+            getEnnemiesFromStorage();
+        }
+
 
         setAllButtons();
+    }
+
+    public void setPathList() {
+
+    }
+
+    public void addPath(String elementType, String picturePath, String namePhoto) {
+        if ("HERO".equals(elementType)) {
+            heroPath = picturePath;
+            System.out.println("Nouveau Hero!!!!!!!!!!!!!!!!" + heroPath);
+        } else {
+            pathList.add(picturePath);
+            System.out.println("Ennemie!!!!!!!!!!!!!!!!" + picturePath);
+        }
+
     }
 
     public void getEnnemiesFromStorage() {
 
         List<ImageView> imageViews = new ArrayList<>();
 
-        for (String imagePath : pathList) {
-            Bitmap bmp = BitmapFactory.decodeFile(imagePath);
-            Drawable image = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmp, 50, 50, true));
-            ImageView imageView = new ImageView(this);
-            imageView.setBackground(image);
-            //imageView.setBackgroundResource(R.drawable.imagetest);
-        }
+        if (pathList != null
+                && !pathList.isEmpty()) {
+            for (String imagePath : pathList) {
 
-        addEnnemiesOnScrollView(imageViews);
+                Bitmap bmp = BitmapFactory.decodeFile(imagePath);
+                //Drawable image = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmp, 50, 50, true));
+                Drawable image = new BitmapDrawable(getResources(), bmp);
+                ImageView imageView = new ImageView(this);
+                imageView.setBackground(image);
+                imageViews.add(imageView);
+                //imageView.setBackgroundResource(R.drawable.imagetest);
+            }
+
+            addEnnemiesOnScrollView(imageViews);
+        }
     }
 
 
@@ -150,7 +187,7 @@ public class FullscreenActivity extends AppCompatActivity {
                     scrollLayout.removeView(image);
                 }
             });
-
+            System.out.println("///////////////////////////////"+image+"//////////////////////////////////");
             scrollLayout.addView(image);
         }
     }

@@ -88,12 +88,17 @@ public class CameraActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSION = 200;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
+    private String elementType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
         textureView = (TextureView) findViewById(R.id.texture);
         assert textureView != null;
+
+        elementType = getIntent().getStringExtra("ELEMENT_TYPE");
+
         textureView.setSurfaceTextureListener(textureListener);
         takePictureButton = findViewById(R.id.btn_takepicture);
         relativeLayoutPhoto = findViewById(R.id.relativeLayoutPhoto);
@@ -237,6 +242,7 @@ public class CameraActivity extends AppCompatActivity {
                         save(bytes);
 
                         Intent showPicture = new Intent(CameraActivity.this, EditorActivity.class);
+                        showPicture.putExtra("ELEMENT_TYPE", elementType);
                         showPicture.putExtra("pathPhoto", file.getPath());
                         showPicture.putExtra("namePhoto", name);
                         startActivity(showPicture);

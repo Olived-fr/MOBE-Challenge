@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 
+import com.m2dl.shotngun.CameraActivity;
+import com.m2dl.shotngun.FullscreenActivity;
 import com.m2dl.shotngun.R;
 
 import java.io.File;
@@ -31,15 +33,18 @@ public class EditorActivity extends AppCompatActivity {
     private EditorView viewtest;
     static String pimpedPhoto, namePhoto;
     private Button buttonValid;
+    private String elementType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
+        elementType = getIntent().getStringExtra("ELEMENT_TYPE");
         pimpedPhoto = intent.getStringExtra("pathPhoto");
         namePhoto = intent.getStringExtra("namePhoto");
+        System.out.println();
         setContentView(R.layout.activity_editor);
-        viewtest =(EditorView) findViewById(R.id.editorView);
+        viewtest = (EditorView) findViewById(R.id.editorView);
         buttonValid = findViewById(R.id.buttonValid);
         buttonValid.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +75,11 @@ public class EditorActivity extends AppCompatActivity {
 
                 viewtest.validImage().compress(Bitmap.CompressFormat.JPEG, 100, fOut);
 
+                Intent homePage = new Intent(getBaseContext(), FullscreenActivity.class);
+                homePage.putExtra("ELEMENT_TYPE", elementType);
+                homePage.putExtra("PICTURE_PATH", f.getAbsolutePath());
+                homePage.putExtra("PICTURE_NAME", namePhoto+".png");
+                startActivity(homePage);
 
             }
         });
