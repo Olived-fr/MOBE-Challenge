@@ -9,11 +9,14 @@ public class Player extends Sprite {
 
     private boolean gameOver;
     protected boolean jumping;
+    protected boolean direction;
 
     public Player(int screenWidth, int screenHeight, Context context) {
-        super(context, R.mipmap.ic_launcher_round);
+        this.makeBitmap(context, R.mipmap.ic_launcher_round);
         this.x = screenWidth / 2;
         this.y = screenHeight;
+        this.width = 40;
+        this.height = 70;
         this.direction = true;
         this.vx = 0;
         this.vy = 0.7;
@@ -49,5 +52,13 @@ public class Player extends Sprite {
 
     public boolean isGameOver() {
         return gameOver;
+    }
+
+    public boolean isJumping() {
+        return jumping;
+    }
+
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
     }
 }

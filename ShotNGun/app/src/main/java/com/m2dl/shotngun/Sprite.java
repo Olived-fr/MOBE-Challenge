@@ -12,17 +12,13 @@ import static android.content.ContentValues.TAG;
 public class Sprite {
 
     private Bitmap bitmap = null; // image
+    protected int width, height;
     protected int x,y; // Position
-    protected boolean direction;
     protected double vx, vy;
     final static double interval = 0.9; // délai
     protected double g; // gravité
 
-    public Sprite(Context context, int src) {
-        this.bitmap = makeBitmap(context, src);
-    }
-
-    private Bitmap makeBitmap(Context context, int src) {
+    public Bitmap makeBitmap(Context context, int src) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inMutable = true;
         options.inSampleSize = 2;
@@ -43,8 +39,11 @@ public class Sprite {
         }
     }
 
-    public void refresh(){
-
+    public Bitmap getBitmap() {
+        return bitmap;
     }
 
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 }
